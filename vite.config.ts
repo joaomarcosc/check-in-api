@@ -6,4 +6,17 @@ export default defineConfig({
     // Plugin to vitest understand absolute imports in tsconfig file
     tsconfigPaths(),
   ],
+
+  test: {
+    coverage: {
+      include: ['src/**/*'],
+      exclude: [
+        'src/http/routes.ts',
+        'src/env',
+        'src/app.ts',
+        'src/server.ts',
+        'src/lib',
+      ],
+    },
+  },
 })
