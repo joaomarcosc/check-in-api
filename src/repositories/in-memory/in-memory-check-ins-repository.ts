@@ -22,8 +22,6 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
       return null
     }
 
-    console.log(date)
-
     return checkOnSameDate
   }
 
