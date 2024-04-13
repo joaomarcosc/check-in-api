@@ -41,5 +41,7 @@ model Gym {
   longitude   Decimal
   checkIns    CheckIn[]
 
+  created_at DateTime @default(now())
+
   @@map("gyms")
 }
