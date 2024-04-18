@@ -7,31 +7,29 @@ interface GetDistanceBetweenCoordinates {
   from: Coordinate
   to: Coordinate
 }
+
 // Return distance between twice locations in kilometers
 export function getDistanceBetweenCoordinates({
   from,
   to,
 }: GetDistanceBetweenCoordinates) {
-  if (from.latitude === to.latitude && from.longitude === to.longitude) return 0
+  const earthRadiusKm = 6371 // Earth radian in kilometers
 
-  const fromRadian = (Math.PI * from.latitude) / 180
-  const toRadian = (Math.PI * to.latitude) / 180
+  const fromLatRadian = (Math.PI * from.latitude) / 180
+  const toLatRadian = (Math.PI * to.latitude) / 180
+  const latDiffRadian = (Math.PI * (to.latitude - from.latitude)) / 180
+  const lonDiffRadian = (Math.PI * (to.longitude - from.longitude)) / 180
 
-  const theta = from.longitude - to.longitude
-  const radTheta = (Math.PI * theta) / 180
+  const a =
+    Math.sin(latDiffRadian / 2) * Math.sin(latDiffRadian / 2) +
+    Math.cos(fromLatRadian) *
+      Math.cos(toLatRadian) *
+      Math.sin(lonDiffRadian / 2) *
+      Math.sin(lonDiffRadian / 2)
 
-  let dist =
-    Math.sin(fromRadian) * Math.sin(toRadian) +
-    Math.cos(fromRadian) * Math.cos(radTheta)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
-  if (dist > 1) {
-    dist = 1
-  }
+  const distance = earthRadiusKm * c
 
-  dist = Math.acos(dist)
-  dist = (dist * 180) / Math.PI
-  dist = dist * 60 * 1.1515
-  dist = dist * 1.609344
-
-  return dist
+  return distance
 }
